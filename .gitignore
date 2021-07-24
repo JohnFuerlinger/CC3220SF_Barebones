@@ -6,6 +6,9 @@
 
 # All the pathways
 !main/
+!app_layer/
+!hardware_layer/
+!library_layer/
 
 # CCS Intrinsics (forget if this causes cross-compatibility issues)
 !*.project

@@ -93,6 +93,5 @@ SECTIONS
     .bss                  : > SRAM_DATA
     .sysmem               : > SRAM_DATA
     .stack                : > SRAM_DATA(HIGH)
-
 }
 
