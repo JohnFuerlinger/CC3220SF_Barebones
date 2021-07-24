@@ -19,32 +19,32 @@
 
 /* This is going to take a while... */
 
-#define     jUART_BASE          0x4000c000    /* Note: this is for UART A0 only */
-#define     jUARTDR             *(volatile uint32_t *) (jUART_BASE + (0x00))
-#define     jUARTRSR_UARTECR    *(volatile uint32_t *) (jUART_BASE + (0x04))
-#define     jUARTFR             *(volatile uint32_t *) (jUART_BASE + (0x18))
-#define     jUARTIBRD           *(volatile uint32_t *) (jUART_BASE + (0x24))
-#define     jUARTFBRD           *(volatile uint32_t *) (jUART_BASE + (0x28))
-#define     jUARTLCRH           *(volatile uint32_t *) (jUART_BASE + (0x2c))
-#define     jUARTCTL            *(volatile uint32_t *) (jUART_BASE + (0x30))
-#define     jUARTIFLS           *(volatile uint32_t *) (jUART_BASE + (0x34))
-#define     jUARTIM             *(volatile uint32_t *) (jUART_BASE + (0x38))
-#define     jUARTRIS            *(volatile uint32_t *) (jUART_BASE + (0x3c))
-#define     jUARTMIS            *(volatile uint32_t *) (jUART_BASE + (0x40))
-#define     jUARTICR            *(volatile uint32_t *) (jUART_BASE + (0x44))
-#define     jUARTDMACTL         *(volatile uint32_t *) (jUART_BASE + (0x48))
+#define     UART_BASE          0x4000c000    /* Note: this is for UART A0 only */
+#define     UARTDR             *(volatile uint32_t *) (UART_BASE + (0x00))
+#define     UARTRSR_UARTECR    *(volatile uint32_t *) (UART_BASE + (0x04))
+#define     UARTFR             *(volatile uint32_t *) (UART_BASE + (0x18))
+#define     UARTIBRD           *(volatile uint32_t *) (UART_BASE + (0x24))
+#define     UARTFBRD           *(volatile uint32_t *) (UART_BASE + (0x28))
+#define     UARTLCRH           *(volatile uint32_t *) (UART_BASE + (0x2c))
+#define     UARTCTL            *(volatile uint32_t *) (UART_BASE + (0x30))
+#define     UARTIFLS           *(volatile uint32_t *) (UART_BASE + (0x34))
+#define     UARTIM             *(volatile uint32_t *) (UART_BASE + (0x38))
+#define     UARTRIS            *(volatile uint32_t *) (UART_BASE + (0x3c))
+#define     UARTMIS            *(volatile uint32_t *) (UART_BASE + (0x40))
+#define     UARTICR            *(volatile uint32_t *) (UART_BASE + (0x44))
+#define     UARTDMACTL         *(volatile uint32_t *) (UART_BASE + (0x48))
 
     #define BR_CLKVAL       80000000 /* 80 MHz Uart clock rate */
 
-    #define jUARTCTL_EN     (1U << 0)
-    #define jUARTCTL_EOT    (1U << 4)   /* End of Transmission (1 == TXRIS only set when everything clears serializer) */
-    #define jUARTLCRH_FEN   (1U << 4) /* Enable FIFOs (1 == enabled) */
-    #define jUARTLCRH_WLEN(x)  ((x-5) << 5) /* Word length (2 bits, 0->3 ranging from 5->8 data bits) */
-    #define jUARTDMACTL_TXDMAE  (1U << 1)   /* Transmit DMA enable (1 == enabled) */
-    #define jUARTDMACTL_RXDMAE  (1U << 0)   /* Receive DMA enable (1 == enabled) */
-    #define jUARTFR_BUSY        (1U << 3)
-    #define jUARTIFLS_RXIFLSEL(x)  (x << 3) /* RX side fifo trigger level (2 bits) */
-    #define jUARTIFLS_TXIFLSEL(x)  (x << 0) /* TX side fifo trigger level (2 bits) */
+    #define UARTCTL_EN     (1U << 0)
+    #define UARTCTL_EOT    (1U << 4)   /* End of Transmission (1 == TXRIS only set when everything clears serializer) */
+    #define UARTLCRH_FEN   (1U << 4) /* Enable FIFOs (1 == enabled) */
+    #define UARTLCRH_WLEN(x)  ((x-5) << 5) /* Word length (2 bits, 0->3 ranging from 5->8 data bits) */
+    #define UARTDMACTL_TXDMAE  (1U << 1)   /* Transmit DMA enable (1 == enabled) */
+    #define UARTDMACTL_RXDMAE  (1U << 0)   /* Receive DMA enable (1 == enabled) */
+    #define UARTFR_BUSY        (1U << 3)
+    #define UARTIFLS_RXIFLSEL(x)  (x << 3) /* RX side fifo trigger level (2 bits) */
+    #define UARTIFLS_TXIFLSEL(x)  (x << 0) /* TX side fifo trigger level (2 bits) */
 
 
 
@@ -54,23 +54,11 @@
 
 
 
-/* Note: currently in process of re-writing driver libraries */
-
 //#define TERATERM
 //#ifdef TERATERM
 //    #define ENTER_KEYSTROKE     '\r'
 //#endif
 
-
-
-//
-
-//
-//
-
-//
-
-//
 //
 ///* This function will eventually evolve into a printf-like function. For now it will
 // * be the naive version, which can only take 1 argument (char pointer to C-Style string).

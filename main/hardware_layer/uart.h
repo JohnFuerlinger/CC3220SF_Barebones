@@ -1,8 +1,11 @@
 /*
  * uart.h
  *
- *  Created on: Jul 24, 2021
- *      Author: iuser
+ * Author: John Fuerlinger
+ *
+ * Desc: Hardware level access to CC3220SF UART module.
+ *
+ * (c) 2021, John Fuerlinger, all rights reserved
  */
 
 #ifndef HARDWARE_LAYER_UART_H_
@@ -10,11 +13,12 @@
 
 #include "platform.h"
 
-#define BYTEOUT(byte) do {                                              \
-                        while (jUARTFR & jUARTFR_BUSY) { ; }            \
-                        jUARTDR = byte;                                 \
-                        while (!(jUARTRIS & (1 << 5))) { ; }            \
-                        jUARTICR |= (1U << 5);                          \
+
+#define BYTEOUT_D(byte) do {                                              \
+                        while (UARTFR & UARTFR_BUSY) { ; }            \
+                        UARTDR = byte;                                 \
+                        while (!(UARTRIS & (1 << 5))) { ; }            \
+                        UARTICR |= (1U << 5);                          \
                     } while(0)                                          \
 
 

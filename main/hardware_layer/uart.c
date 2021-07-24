@@ -1,8 +1,11 @@
 /*
  * uart.c
  *
- *  Created on: Jul 24, 2021
- *      Author: iuser
+ * Author: John Fuerlinger
+ *
+ * Desc: Hardware level access to CC3220SF UART module.
+ *
+ * (c) 2021, John Fuerlinger, all rights reserved
  */
 
 #include "uart.h"
@@ -10,32 +13,32 @@
 void init_uart() {
 
     /* Disable UART */
-    jUARTCTL &= ~jUARTCTL_EN;
+    UARTCTL &= ~UARTCTL_EN;
 
-    jUARTLCRH &= ~jUARTLCRH_FEN;  /* Flush FIFO's */
-    jUARTCTL |= jUARTCTL_EOT;   /* Only set TXRIS when entire fifo is empty */
+    UARTLCRH &= ~UARTLCRH_FEN;  /* Flush FIFO's */
+    UARTCTL |= UARTCTL_EOT;   /* Only set TXRIS when entire fifo is empty */
 
-    jUARTIFLS &= ~jUARTIFLS_RXIFLSEL(2); /* Clear bit 2, which sets the trigger to minimum level */
-    jUARTIFLS |= jUARTIFLS_RXIFLSEL(1);
-    jUARTIFLS &= ~jUARTIFLS_TXIFLSEL(2); /* Clear bit 2, which sets the trigger to minimum level */
-    jUARTIFLS |= jUARTIFLS_TXIFLSEL(1);
+    UARTIFLS &= ~UARTIFLS_RXIFLSEL(2); /* Clear bit 2, which sets the trigger to minimum level */
+    UARTIFLS |= UARTIFLS_RXIFLSEL(1);
+    UARTIFLS &= ~UARTIFLS_TXIFLSEL(2); /* Clear bit 2, which sets the trigger to minimum level */
+    UARTIFLS |= UARTIFLS_TXIFLSEL(1);
 
-    jUARTCTL |= (1U << 15); /* Clear to send enabled...? */
+    UARTCTL |= (1U << 15); /* Clear to send enabled...? */
 
 
     /* Write Integer & Fractional part of BRD */
-    jUARTIBRD = 0x2b;
-    jUARTFBRD = 0x1a;
+    UARTIBRD = 0x2b;
+    UARTFBRD = 0x1a;
 
     /* Write settings to UARTLCRH */
-    jUARTLCRH |= jUARTLCRH_FEN;         /* Enable fifos */
-    jUARTLCRH |= jUARTLCRH_WLEN(8);     /* Select 8 data bits */
+    UARTLCRH |= UARTLCRH_FEN;         /* Enable fifos */
+    UARTLCRH |= UARTLCRH_WLEN(8);     /* Select 8 data bits */
 
     /* Optionally configure uDMA settings */
-    jUARTDMACTL |= (jUARTDMACTL_TXDMAE | jUARTDMACTL_RXDMAE); /* Enable Rx & Tx DMA control */
+    UARTDMACTL |= (UARTDMACTL_TXDMAE | UARTDMACTL_RXDMAE); /* Enable Rx & Tx DMA control */
 
     /* Enable UART */
-    jUARTCTL |= jUARTCTL_EN;
+    UARTCTL |= UARTCTL_EN;
 }
 
 

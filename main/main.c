@@ -29,26 +29,16 @@
  */
 
 /* The below breaks the rules and is only for testing. bad bad bad */
-#include "hardware_layer/uart.h"
+#include "library_layer/uart_l.h"
+#include "stdio.h"
 
 /* Let's start with something basic */
 int main(void)
 {
+    uint8_t tmp = 182;
     init_uart();
 
-    /* Stupid but hopefully HUMS */
-    BYTEOUT('H');
-    BYTEOUT('e');
-    BYTEOUT('l');
-    BYTEOUT('l');
-    BYTEOUT('o');
-    BYTEOUT(' ');
-    BYTEOUT('W');
-    BYTEOUT('o');
-    BYTEOUT('r');
-    BYTEOUT('l');
-    BYTEOUT('d');
-    BYTEOUT('!');
+    jprintf("Hello world, fprintf style!\n\ndid that work..?\n\nhow about this: %u", tmp);
 
     int i;
     int j = 1000;
