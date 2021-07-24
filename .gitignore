@@ -1,0 +1,20 @@
+# This is a whitelist. We ignore everything and then declare exceptions so that
+# the source code we care about get's included
+
+# Ignore Everything
+*
+
+# All the pathways
+!main/
+
+# CCS Intrinsics (forget if this causes cross-compatibility issues)
+!*.project
+!*.cproject
+!*.ccsproject
+!*.cmd
+
+!*.gitignore
+!*.c
+!*.h
+!*.md
+!*.pdf
