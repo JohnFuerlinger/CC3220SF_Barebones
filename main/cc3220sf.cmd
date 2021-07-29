@@ -67,7 +67,14 @@
  * be decreased in the future. TODO: I would like the ability to manually set every section
  * size. And, what the hell is inside of the .dgbhdr section..?
  */
--stack  0x00010000 /* SOFTWARE STACK SIZE */
+//-stack  0x00001000 /* SOFTWARE STACK SIZE */
+
+--stack_size=1024
+--heap_size=0          /* minimize heap since we are using heap_4.c */
+--entry_point=startup
+--diag_suppress=10063  /* suppress warning about non _c_int00 entry point */
+
+ //--entry_point = _c_int00
 
 MEMORY
 {
@@ -81,7 +88,7 @@ MEMORY
 
 SECTIONS
 {
-	//.dgbhdr     	      : > FLHDR_BASE		/* What the heck is this..? Bootloader? */
+	.dgbhdr     	      : > FLHDR_BASE		/* What the heck is this..? Bootloader? */
     .resetVecs            : > FLASH_BASE
     .init_array           : > FLASH_CODE
     .text                 : > FLASH_CODE
