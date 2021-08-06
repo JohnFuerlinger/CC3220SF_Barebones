@@ -38,6 +38,8 @@
 
     #define UARTCTL_EN     (1U << 0)
     #define UARTCTL_EOT    (1U << 4)   /* End of Transmission (1 == TXRIS only set when everything clears serializer) */
+    #define UARTCTL_RXE    (1U << 9)
+    #define UARTCTL_TXE    (1U << 8)
     #define UARTLCRH_FEN   (1U << 4) /* Enable FIFOs (1 == enabled) */
     #define UARTLCRH_WLEN(x)  ((x-5) << 5) /* Word length (2 bits, 0->3 ranging from 5->8 data bits) */
     #define UARTDMACTL_TXDMAE  (1U << 1)   /* Transmit DMA enable (1 == enabled) */
@@ -47,150 +49,58 @@
     #define UARTIFLS_TXIFLSEL(x)  (x << 0) /* TX side fifo trigger level (2 bits) */
 
 
+#define ARCM_BASE               0x44025000
 
+#define CAMCLKCFG               *(volatile uint32_t *) (ARCM_BASE + (0x00))
+#define CAMCLKEN                *(volatile uint32_t *) (ARCM_BASE + (0x04))
+#define CAMSWRST                *(volatile uint32_t *) (ARCM_BASE + (0x08))
+#define MCASPCLKEN              *(volatile uint32_t *) (ARCM_BASE + (0x14))
+#define MCASPSWRST              *(volatile uint32_t *) (ARCM_BASE + (0x18))
+#define SDIOMCLKCFG             *(volatile uint32_t *) (ARCM_BASE + (0x20))
+#define SDIOMCLKEN              *(volatile uint32_t *) (ARCM_BASE + (0x24))
+#define SDIOMSWRST              *(volatile uint32_t *) (ARCM_BASE + (0x28))
+#define APSPICLKCFG             *(volatile uint32_t *) (ARCM_BASE + (0x2C))
+#define APSPICLKEN              *(volatile uint32_t *) (ARCM_BASE + (0x30))
+#define APSPISWRST              *(volatile uint32_t *) (ARCM_BASE + (0x34))
+#define DMACLKEN                *(volatile uint32_t *) (ARCM_BASE + (0x48))
+#define DMASWRST                *(volatile uint32_t *) (ARCM_BASE + (0x4C))
+#define GPIO0CLKEN              *(volatile uint32_t *) (ARCM_BASE + (0x50))
+#define GPIO0SWRST              *(volatile uint32_t *) (ARCM_BASE + (0x54))
+#define GPIO1CLKEN              *(volatile uint32_t *) (ARCM_BASE + (0x58))
+#define GPIO1SWRST              *(volatile uint32_t *) (ARCM_BASE + (0x5C))
+#define GPIO2CLKEN              *(volatile uint32_t *) (ARCM_BASE + (0x60))
+#define GPIO2SWRST              *(volatile uint32_t *) (ARCM_BASE + (0x64))
+#define GPIO3CLKEN              *(volatile uint32_t *) (ARCM_BASE + (0x68))
+#define GPIO3SWRST              *(volatile uint32_t *) (ARCM_BASE + (0x6C))
+#define GPIO4CLKEN              *(volatile uint32_t *) (ARCM_BASE + (0x70))
+#define GPIO4SWRST              *(volatile uint32_t *) (ARCM_BASE + (0x74))
+#define WDTCLKEN                *(volatile uint32_t *) (ARCM_BASE + (0x78))
+#define WDTSWRST                *(volatile uint32_t *) (ARCM_BASE + (0x7C))
+#define UART0CLKEN              *(volatile uint32_t *) (ARCM_BASE + (0x80))
+#define UART0SWRST              *(volatile uint32_t *) (ARCM_BASE + (0x84))
+#define UART1CLKEN              *(volatile uint32_t *) (ARCM_BASE + (0x88))
+#define UART1SWRST              *(volatile uint32_t *) (ARCM_BASE + (0x8C))
+#define GPT0CLKCFG              *(volatile uint32_t *) (ARCM_BASE + (0x90))
+#define GPT0SWRST               *(volatile uint32_t *) (ARCM_BASE + (0x94))
+#define GPT1CLKEN               *(volatile uint32_t *) (ARCM_BASE + (0x98))
+#define GPT1SWRST               *(volatile uint32_t *) (ARCM_BASE + (0x9C))
+#define GPT2CLKEN               *(volatile uint32_t *) (ARCM_BASE + (0xA0))
+#define GPT2SWRST               *(volatile uint32_t *) (ARCM_BASE + (0xA4))
+#define GPT3CLKEN               *(volatile uint32_t *) (ARCM_BASE + (0xA8))
+#define GPT3SWRST               *(volatile uint32_t *) (ARCM_BASE + (0xAC))
+#define MCASPCLKCFG0            *(volatile uint32_t *) (ARCM_BASE + (0xB0))
+#define MCASPCLKCFG1            *(volatile uint32_t *) (ARCM_BASE + (0xB4))
+#define I2CLCKEN                *(volatile uint32_t *) (ARCM_BASE + (0xD8))
+#define I2CSWRST                *(volatile uint32_t *) (ARCM_BASE + (0xDC))
+#define LPDSREQ                 *(volatile uint32_t *) (ARCM_BASE + (0xE4))
+#define TURBOREQ                *(volatile uint32_t *) (ARCM_BASE + (0xEC))
+#define DSLPWAKECFG             *(volatile uint32_t *) (ARCM_BASE + (0x108))
+#define DSLPTIMRCFG             *(volatile uint32_t *) (ARCM_BASE + (0x10C))
+#define SLPWAKEEN               *(volatile uint32_t *) (ARCM_BASE + (0x110))
+#define SLPTMRCFG               *(volatile uint32_t *) (ARCM_BASE + (0x114))
+#define WAKENWP                 *(volatile uint32_t *) (ARCM_BASE + (0x118))
+#define RCM_IS                  *(volatile uint32_t *) (ARCM_BASE + (0x120))
+#define RCM_IEN                 *(volatile uint32_t *) (ARCM_BASE + (0x124))
 
 
 #endif /* HARDWARE_LAYER_PLATFORM_H_ */
-
-
-
-//#define TERATERM
-//#ifdef TERATERM
-//    #define ENTER_KEYSTROKE     '\r'
-//#endif
-
-//
-///* This function will eventually evolve into a printf-like function. For now it will
-// * be the naive version, which can only take 1 argument (char pointer to C-Style string).
-// * It simply prints the string until it finds the null terminator.
-// *
-// * TODO: NOTE: THIS IS A POTENTIALLY DANGEROUS FUNCTION. IF NO NULL TERMINATOR IS FOUND THE DSP WILL FAIL.
-// * This needs to be handled.
-// */
-//
-//
-///*
-// * Format specifiers:
-// *
-// * %s: string (char *)
-// * %d or %u: integer - 16 bit
-// *      %lu or %du (long integer - 32 bit)
-// * %f: float (standard single precision (32 bit))
-// *
-// *
-// * ***Fix
-// *
-// */
-//void muprintf(char * buf) {
-//    for(int i = 0; i < strlen(buf); i++) {
-//        BYTEOUT(buf[i]);
-//    }
-//}
-//
-///* This function is used to determine if two string pointers are equal.
-// * Return 1 = equal (true), return 0 = not equal (false)
-// * This function is assuming that both pointers we are passing actually point to arrays of characters ending with a null terminator.
-// * If we pass in pointers that do not point to an array of characters with a null terminator our entire project breaks - tread carefully.
-// */
-//uint8_t gstrcmp(char * str1, char * str2) {
-//
-//    if (strlen(str1) != strlen(str2)) {
-//        return 0;
-//    }
-//
-//    for(int i = 0; i < strlen(str1); i++) {
-//        if (str1[i] != str2[i]) {
-//            return 0;
-//        }
-//    }
-//
-//    return 1;
-//}
-//
-//
-///* This is a foundation for our terminal. It will simply receive a character and echo it back
-// * over the UART. Next, we should build a "command" buffer and command list. This will allow the
-// * user to enter a command, press enter, and then the DSP will execute the command.
-// */
-//void example_task(void *arg0) {
-//
-//    init_myuart(); /* Rewriting driver library for added control */
-//
-//    /* Init term color as white */
-//    termcol = WHITE;
-//
-//    uint8_t bufsize = 0;
-//    char mybuf[20];
-//
-//    /* Initialize buf */
-//    for (int i = 0; i < 20; i++) {
-//        mybuf[i] = 0;
-//    }
-//
-//    char byte;
-//
-//    muprintf("\r\n\r\nPrompt> ");
-//
-//    while(1) {
-//
-//        if (!(jUARTFR & (1 << 4))) { /* See if we have a byte available on RX side */
-//
-//            byte = (jUARTDR & (0xff)); /* Read the byte */
-//
-//            /* First check to see if we have room in the buffer */
-//            if (bufsize > 19 && byte != '\010') {
-//                ERRORPRNT("\r\nError: Too many characters");
-//                muprintf("\r\n\r\nPrompt> ");
-//
-//                /* Clear the buffer */
-//                for (int i = 0; i < 20; i++) {
-//                    mybuf[i] = 0;
-//                }
-//                bufsize = 0; /* Reset buffer counter */
-//                continue;
-//            }
-//
-//            /* Check for special characters */
-//
-//            if (byte == '\r') {
-//               /* Enter */
-//
-//                if (bufsize != 0) {
-//                    /* Parse and execute commands */
-//
-//                    /* This is a high-level wrapper to execute functions. Maybe it should be renamed. In any case, it will completely handle command
-//                     * execution with the use of no global variables (which in this case is good design)
-//                     */
-//                    parse_command(mybuf);
-//
-//                    muprintf("\r\n\r\nPrompt> ");
-//
-//                    /* Clear the buffer */
-//                    for (int i = 0; i < 20; i++) {
-//                        mybuf[i] = 0;
-//                    }
-//                    bufsize = 0; /* Reset buffer counter */
-//                } else {
-//                    muprintf("\r\n\r\nPrompt> ");
-//                }
-//            } else if (byte == '\010' || byte == 0x7F) {
-//                /* Backspace */
-//
-//                if (bufsize != 0) {
-//                    /* The below is a terminal hack to make it appear to the user that they 'erased' the previous character */
-//                    muprintf("\010 \010");
-//
-//                    mybuf[bufsize-1] = 0;
-//                    bufsize--;
-//                }
-//
-//            } else if ((byte >= 'a' && byte <= 'z') || byte == ' ') { /* Accept all lowerchar chars */
-//                /* All other characters */
-//
-//                BYTEOUT(byte); /* Just echo the char */
-//                mybuf[bufsize] = byte; /* Track this byte in our buffer */
-//                bufsize++;
-//            }
-//        }
-//    }
-//}

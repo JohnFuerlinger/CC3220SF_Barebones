@@ -19,7 +19,7 @@
                         UARTDR = byte;                                 \
                         while (!(UARTRIS & (1 << 5))) { ; }            \
                         UARTICR |= (1U << 5);                          \
-                    } while(0)                                          \
+                    } while(0);                                          \
 
 
 void init_uart();
